@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"project/internal/driver/service"
 )
@@ -16,5 +17,5 @@ func NewHandler(driver *service.Driver) *DriverHandler {
 }
 
 func (d *DriverHandler) GetAllTripHandler(w http.ResponseWriter, r *http.Request) {
-
+	fmt.Print("not implement")
 }

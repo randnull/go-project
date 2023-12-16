@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"github.com/jmoiron/sqlx"
 	"log"
+	"project/modals"
 )
 
 type LocationRepository struct {
@@ -23,7 +25,20 @@ func NewLocationRepository() *LocationRepository {
 		log.Fatal(err)
 	}
 
+	// + goose для миграций
+
 	return &LocationRepository{
 		db: db,
 	}
+}
+
+func (storage *LocationRepository) GetDrivers() ([]*modals.Driver, error) {
+	fmt.Print("not implement")
+	return nil, nil
+}
+
+func (storage *LocationRepository) GetDriverLocationById(driver_id string) (*modals.Driver, error) {
+	//поиск из postgres по id
+	fmt.Print("not implement")
+	return nil, nil
 }
