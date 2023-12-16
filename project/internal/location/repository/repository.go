@@ -37,8 +37,11 @@ func (storage *LocationRepository) GetDrivers() ([]*modals.Driver, error) {
 	return nil, nil
 }
 
-func (storage *LocationRepository) GetDriverLocationById(driver_id string) (*modals.Driver, error) {
-	//поиск из postgres по id
-	fmt.Print("not implement")
-	return nil, nil
+func (storage *LocationRepository) GetDriverLocationById(driverID int) (*modals.Driver, error) {
+	driver := &modals.Driver{}
+	err := storage.db.Get(driver, "SELECT * FROM driver WHERE id = $1", driverID)
+	if err != nil {
+		return nil, err
+	}
+	return driver, nil
 }
