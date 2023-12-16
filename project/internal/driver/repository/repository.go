@@ -13,7 +13,7 @@ import (
 )
 
 type Repository struct {
-	db_collection *mongo.Collection
+	dbCollection *mongo.Collection
 }
 
 func NewRepository(URI string) (*Repository, error) {
@@ -37,7 +37,7 @@ func NewRepository(URI string) (*Repository, error) {
 	collectionTrip := mongoDb.Collection("trip")
 
 	return &Repository{
-		db_collection: collectionTrip,
+		dbCollection: collectionTrip,
 	}, nil
 }
 
@@ -51,7 +51,7 @@ func (storage *Repository) GetTripById(id string) (*modals.Trip, error) {
 
 	filter := bson.M{"id": id}
 
-	err := storage.db_collection.FindOne(context.TODO(), filter).Decode(&answerTrip)
+	err := storage.dbCollection.FindOne(context.TODO(), filter).Decode(&answerTrip)
 
 	if err != nil {
 		log.Fatal(err)
@@ -64,7 +64,7 @@ func (storage *Repository) CancelTrip(id string) error {
 	filter := bson.M{"id": id}
 	update := bson.M{"$set": bson.M{"status": "Canceled"}}
 
-	_, err := storage.db_collection.UpdateOne(context.TODO(), filter, update)
+	_, err := storage.dbCollection.UpdateOne(context.TODO(), filter, update)
 
 	if err != nil {
 		log.Fatal(err)
@@ -77,7 +77,7 @@ func (storage *Repository) AcceptTrip(id string) error {
 	filter := bson.M{"id": id}
 	update := bson.M{"$set": bson.M{"status": "Accepted"}}
 
-	_, err := storage.db_collection.UpdateOne(context.TODO(), filter, update)
+	_, err := storage.dbCollection.UpdateOne(context.TODO(), filter, update)
 
 	if err != nil {
 		log.Fatal(err)
@@ -90,7 +90,7 @@ func (storage *Repository) StartTrip(id string) error {
 	filter := bson.M{"id": id}
 	update := bson.M{"$set": bson.M{"status": "Started"}}
 
-	_, err := storage.db_collection.UpdateOne(context.TODO(), filter, update)
+	_, err := storage.dbCollection.UpdateOne(context.TODO(), filter, update)
 
 	if err != nil {
 		log.Fatal(err)
