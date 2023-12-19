@@ -74,7 +74,7 @@ func (storage *LocationRepository) GetDriverLocationById(driverID string) (*moda
 }
 
 func (storage *LocationRepository) UpdateDriverPosition(driverID string, newLat, newLng float64) (*modals.Driver, error) {
-	query := `UPDATE driver SET lat = $2, lng = $3 WHERE id = $1 RETURNING *`
+	query := `UPDATE drivers SET lat = $2, lng = $3 WHERE id = $1 RETURNING *`
 	driver := &modals.Driver{}
 	err := storage.db.Get(driver, query, driverID, newLat, newLng)
 	if err != nil {

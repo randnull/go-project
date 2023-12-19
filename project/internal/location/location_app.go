@@ -32,5 +32,5 @@ func (a *App) Run() {
 	router.HandleFunc("/drivers", a.server.GetDriversHandler).Methods("GET")
 	router.HandleFunc("/drivers/{driver_id}/location", a.server.UpdateDriverLocationHandler).Methods("POST")
 
-	http.ListenAndServe(":1232", router)
+	http.ListenAndServe(":1542", router)
 }
