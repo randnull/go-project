@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"github.com/jmoiron/sqlx"
 	"log"
 	"project/modals"
@@ -25,16 +24,33 @@ func NewLocationRepository() *LocationRepository {
 		log.Fatal(err)
 	}
 
-	// + goose для миграций
+	query := `
+		CREATE TABLE IF NOT EXISTS drivers (
+			id SERIAL PRIMARY KEY,
+			lat DOUBLE PRECISION,
+			lng DOUBLE PRECISION,
+			name VARCHAR(255),
+			auto VARCHAR(255)
+		)
+	`
+
+	_, err = db.Exec(query)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return &LocationRepository{
 		db: db,
 	}
 }
 
-func (storage *LocationRepository) GetDrivers() ([]*modals.Driver, error) {
-	fmt.Print("not implement")
-	return nil, nil
+func (storage *LocationRepository) GetDrivers() ([]modals.Driver, error) {
+	var drivers []modals.Driver
+	err := storage.db.Select(&drivers, "SELECT * FROM drivers")
+	if err != nil {
+		return nil, err
+	}
+	return drivers, nil
 }
 
 func (storage *LocationRepository) GetDriverLocationById(driverID int) (*modals.Driver, error) {

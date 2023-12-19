@@ -1,9 +1,9 @@
 package modals
 
 type Driver struct {
-	lat  int
-	lgn  int
-	id   string
-	name string
-	auto string
+	Lat  float64 `db:"lat" json:"lat"`
+	Lng  float64 `db:"lng" json:"lng"`
+	ID   string  `db:"id" json:"id"`
+	Name string  `db:"name" json:"name"`
+	Auto string  `db:"auto" json:"auto"`
 }
