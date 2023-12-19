@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"github.com/jmoiron/sqlx"
 	"log"
 	"project/modals"
@@ -39,6 +40,15 @@ func NewLocationRepository() *LocationRepository {
 		log.Fatal(err)
 	}
 
+	insertDataQuery := `
+		INSERT INTO drivers (lat, lng, name, auto) VALUES ($1, $2, $3, $4)
+	`
+	_, err = db.Exec(insertDataQuery, 123.23, 123.42, "ivan", "toyta")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Data inserted successfully")
+
 	return &LocationRepository{
 		db: db,
 	}
@@ -53,7 +63,7 @@ func (storage *LocationRepository) GetDrivers() ([]modals.Driver, error) {
 	return drivers, nil
 }
 
-func (storage *LocationRepository) GetDriverLocationById(driverID int) (*modals.Driver, error) {
+func (storage *LocationRepository) GetDriverLocationById(driverID string) (*modals.Driver, error) {
 	driver := &modals.Driver{}
 	err := storage.db.Get(driver, "SELECT * FROM driver WHERE id = $1", driverID)
 	if err != nil {
@@ -62,7 +72,7 @@ func (storage *LocationRepository) GetDriverLocationById(driverID int) (*modals.
 	return driver, nil
 }
 
-func (storage *LocationRepository) UpdateDriverPosition(driverID int, newLat, newLng float64) (*modals.Driver, error) {
+func (storage *LocationRepository) UpdateDriverPosition(driverID string, newLat, newLng float64) (*modals.Driver, error) {
 	query := `UPDATE driver SET lat = $2, lng = $3 WHERE id = $1 RETURNING *`
 	driver := &modals.Driver{}
 	err := storage.db.Get(driver, query, driverID, newLat, newLng)

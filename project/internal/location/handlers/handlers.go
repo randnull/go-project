@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"project/internal/location/errors"
-	"project/internal/location/repository"
+	"project/internal/location/service"
 	"strconv"
 )
 
@@ -15,10 +15,10 @@ type LatLngLiteral struct {
 }
 
 type LocationHandler struct {
-	location *repository.LocationRepository
+	location *service.Location
 }
 
-func NewHandler(location *repository.LocationRepository) *LocationHandler {
+func NewHandler(location *service.Location) *LocationHandler {
 	return &LocationHandler{
 		location: location,
 	}
