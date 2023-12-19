@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"project/internal/location/errors"
 	"project/internal/location/service"
-	"strconv"
 )
 
 type LatLngLiteral struct {
@@ -25,7 +24,7 @@ func NewHandler(location *service.Location) *LocationHandler {
 }
 
 func (lhandler *LocationHandler) GetDriversHandler(w http.ResponseWriter, r *http.Request) {
-	drivers, err := lhandler.location.GetDrivers()
+	drivers, err := lhandler.location.GetAllDrivers()
 	if err != nil {
 		http.Error(w, errors.DriversNotFound.Error(), 404)
 		return
@@ -40,18 +39,13 @@ func (lhandler *LocationHandler) UpdateDriverLocationHandler(w http.ResponseWrit
 		return
 	}
 
-	intDriverID, err := strconv.Atoi(driverID)
-	if err != nil {
-		http.Error(w, "Bad request - driverID is not an integer", http.StatusBadRequest)
-		return
-	}
 	var locReq LatLngLiteral
-	err = json.NewDecoder(r.Body).Decode(&locReq)
+	err := json.NewDecoder(r.Body).Decode(&locReq)
 	if err != nil {
 		http.Error(w, "errors.InvalidLocation.Error()", 400)
 		return
 	}
-	driver, err := lhandler.location.UpdateDriverPosition(intDriverID, locReq.Lat, locReq.Lng)
+	driver, err := lhandler.location.UpdateDriverPosition(driverID, locReq.Lat, locReq.Lng)
 	if err != nil {
 		http.Error(w, "Invalid server error", 500)
 		return
