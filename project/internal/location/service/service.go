@@ -28,14 +28,10 @@ func (l *Location) GetAllDrivers() ([]modals.Driver, error) {
 	return drivers, nil
 }
 
-func (l *Location) ChangeDriverById(driverID string) (*modals.Driver, error) {
-	driver, err := l.repo.GetDriverLocationById(driverID)
+func (l *Location) UpdateDriverPosition(driverID string, newLat, newLng float64) (*modals.Driver, error) {
+	driver, err := l.repo.UpdateDriverPosition(driverID, newLat, newLng)
 	if err != nil {
 		return nil, err
 	}
 	return driver, nil
-}
-
-func (l *Location) UpdateDriverPosition(driverID string, newLat, newLng float64) (*modals.Driver, error) {
-	return nil, nil
 }
