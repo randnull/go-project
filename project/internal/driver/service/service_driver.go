@@ -6,11 +6,12 @@ import (
 )
 
 type DriverRepository interface {
-	GetListTrip() (*[]modals.Trip, error)
-	GetTripById(id string) (*modals.Trip, error)
-	CancelTrip(id string) error
-	AcceptTrip(id string) error
-	StartTrip(id string) error
+	GetListTrip(user_id string) (*[]modals.Trip, error)
+	GetTripById(user_id string, trip_id string) (*modals.Trip, error)
+	CancelTrip(user_id string, trip_id string, reason string) error
+	AcceptTrip(user_id string, trip_id string) error
+	StartTrip(user_id string, trip_id string) error
+	EndTrip(user_id string, trip_id string) error
 }
 
 type Driver struct {
@@ -23,8 +24,8 @@ func NewDriverService(repo DriverRepository) *Driver {
 	}
 }
 
-func (d *Driver) GetAllTrips() (*[]modals.Trip, error) {
-	trips, err := d.repo.GetListTrip()
+func (d *Driver) GetAllTrips(user_id string) (*[]modals.Trip, error) {
+	trips, err := d.repo.GetListTrip(user_id)
 
 	if err != nil {
 		log.Fatal(err)
@@ -33,8 +34,8 @@ func (d *Driver) GetAllTrips() (*[]modals.Trip, error) {
 	return trips, nil
 }
 
-func (d *Driver) GetIdTrip(id string) (*modals.Trip, error) {
-	trip, err := d.repo.GetTripById(id)
+func (d *Driver) GetIdTrip(user_id string, trip_id string) (*modals.Trip, error) {
+	trip, err := d.repo.GetTripById(user_id, trip_id)
 
 	if err != nil {
 		log.Fatal(err)
@@ -43,31 +44,45 @@ func (d *Driver) GetIdTrip(id string) (*modals.Trip, error) {
 	return trip, nil
 }
 
-func (d *Driver) Cancel(id string) error {
-	err := d.repo.CancelTrip(id)
+func (d *Driver) Cancel(user_id string, trip_id string, reason string) error {
+	err := d.repo.CancelTrip(user_id, trip_id, reason)
 
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 
 	return nil
 }
 
-func (d *Driver) Accept(id string) error {
-	err := d.repo.AcceptTrip(id)
+func (d *Driver) End(user_id string, trip_id string) error {
+	err := d.repo.EndTrip(user_id, trip_id)
 
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
 
 	return nil
 }
 
-func (d *Driver) Start(id string) error {
-	err := d.repo.StartTrip(id)
+func (d *Driver) Accept(user_id string, trip_id string) error {
+	err := d.repo.AcceptTrip(user_id, trip_id)
 
 	if err != nil {
 		log.Fatal(err)
+		return err
+	}
+
+	return nil
+}
+
+func (d *Driver) Start(user_id string, trip_id string) error {
+	err := d.repo.StartTrip(user_id, trip_id)
+
+	if err != nil {
+		log.Fatal(err)
+		return err
 	}
 
 	return nil

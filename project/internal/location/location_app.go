@@ -9,20 +9,20 @@ import (
 )
 
 type App struct {
-	repo        *repository.LocationRepository
-	server      *handlers.LocationHandler
-	BankService *service.Location
+	repo     *repository.LocationRepository
+	server   *handlers.LocationHandler
+	location *service.Location
 }
 
 func NewApp() *App {
 	repo := repository.NewLocationRepository()
-	serv := service.NewDriverService(repo)
+	serv := service.NewLocationService(repo)
 	server := handlers.NewHandler(serv)
 
 	apl := &App{
-		repo:        repo,
-		server:      server,
-		BankService: serv,
+		repo:     repo,
+		server:   server,
+		location: serv,
 	}
 	return apl
 }

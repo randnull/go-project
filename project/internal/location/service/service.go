@@ -14,7 +14,7 @@ type Location struct {
 	repo LocationRepositoryIn
 }
 
-func NewDriverService(repo LocationRepositoryIn) *Location {
+func NewLocationService(repo LocationRepositoryIn) *Location {
 	return &Location{
 		repo: repo,
 	}
