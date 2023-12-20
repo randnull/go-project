@@ -55,7 +55,7 @@ func NewLocationRepository() *LocationRepository {
 	}
 }
 
-func (storage *LocationRepository) GetDrivers() ([]modals.Driver, error) {
+func (storage *LocationRepository) GetAllDrivers() ([]modals.Driver, error) {
 	var drivers []modals.Driver
 	err := storage.db.Select(&drivers, "SELECT * FROM drivers")
 	if err != nil {

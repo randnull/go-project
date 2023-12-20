@@ -5,7 +5,7 @@ import (
 )
 
 type LocationRepositoryIn interface {
-	GetDrivers() ([]modals.Driver, error)
+	GetAllDrivers() ([]modals.Driver, error)
 	GetDriverLocationById(driverID string) (*modals.Driver, error)
 	UpdateDriverPosition(driverID string, newLat, newLng float64) (*modals.Driver, error)
 }
@@ -21,7 +21,7 @@ func NewDriverService(repo LocationRepositoryIn) *Location {
 }
 
 func (l *Location) GetAllDrivers() ([]modals.Driver, error) {
-	drivers, err := l.repo.GetDrivers()
+	drivers, err := l.repo.GetAllDrivers()
 	if err != nil {
 		return nil, err
 	}
