@@ -46,7 +46,7 @@ func NewDriverRepository() *DriverRepository {
 //	}, nil
 //}
 
-func (storage *DriverRepository) GetListTrip(user_id string, trip_id string) (*[]modals.Trip, error) {
+func (storage *DriverRepository) GetListTrip(user_id string) (*[]modals.Trip, error) {
 	fmt.Print("not implement")
 	return nil, nil
 }
