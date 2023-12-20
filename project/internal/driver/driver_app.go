@@ -1,4 +1,4 @@
-package location_app
+package driver_app
 
 import (
 	"github.com/gorilla/mux"
