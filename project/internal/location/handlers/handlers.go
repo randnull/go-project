@@ -51,13 +51,13 @@ func (lhandler *LocationHandler) GetDriversHandler(w http.ResponseWriter, r *htt
 
 	err := json.NewDecoder(r.Body).Decode(&locReq)
 	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		http.Error(w, errors.InvalidRequestBody.Error(), http.StatusBadRequest)
 		return
 	}
 
 	drivers, err := lhandler.location.GetAllDrivers()
 	if err != nil {
-		http.Error(w, errors.DriversNotFound.Error(), 404)
+		http.Error(w, errors.DriversNotFound.Error(), http.StatusNotFound)
 		return
 	}
 
