@@ -100,7 +100,7 @@ func (storage *DriverRepository) GetTripById(user_id string, trip_id string) (*m
 	fmt.Println("GetTripById with user_id: trip_id")
 	fmt.Println(user_id, trip_id)
 
-	objectTripId, err := primitive.ObjectIDFromHex(user_id)
+	objectTripId, err := primitive.ObjectIDFromHex(trip_id)
 
 	if err != nil {
 		log.Fatal(err)
