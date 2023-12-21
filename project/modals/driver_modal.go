@@ -6,4 +6,4 @@ type Driver struct {
 	ID   string  `db:"id" json:"id"`
 	Name string  `db:"name" json:"name"`
 	Auto string  `db:"auto" json:"auto"`
-}
+} // убрать db + протестить, из какого-то примера были

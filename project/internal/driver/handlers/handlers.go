@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"project/internal/driver/errors"
@@ -33,6 +34,7 @@ func (dhandler *DriverHandler) GetAllTripHandler(w http.ResponseWriter, r *http.
 }
 
 func (dhandler *DriverHandler) GetTripByIdHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("handler get")
 	tripID, ok := mux.Vars(r)["trip_id"]
 	if !ok {
 		http.Error(w, errors.InvalidTripID.Error(), http.StatusBadRequest)
@@ -40,8 +42,9 @@ func (dhandler *DriverHandler) GetTripByIdHandler(w http.ResponseWriter, r *http
 	}
 
 	userID := r.Header.Get("user_id")
-
-	trip, err := dhandler.driver.GetIdTrip(tripID, userID)
+	fmt.Println(tripID, userID)
+	trip, err := dhandler.driver.GetIdTrip(userID, tripID)
+	fmt.Println("handler ask")
 	if err != nil {
 		http.Error(w, errors.InvalidTripID.Error(), http.StatusInternalServerError)
 		return
@@ -61,7 +64,7 @@ func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.
 
 	userID := r.Header.Get("user_id")
 
-	if err := dhandler.driver.Accept(tripID, userID); err != nil {
+	if err := dhandler.driver.Accept(userID, tripID); err != nil {
 		http.Error(w, "Failed to accept trip", http.StatusInternalServerError)
 		return
 	}
@@ -71,6 +74,7 @@ func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.
 
 func (dhandler *DriverHandler) StartTripHandler(w http.ResponseWriter, r *http.Request) {
 	tripID, ok := mux.Vars(r)["trip_id"]
+	fmt.Println("start trip")
 	if !ok {
 		http.Error(w, "Invalid trip id", http.StatusBadRequest)
 		return
@@ -78,11 +82,11 @@ func (dhandler *DriverHandler) StartTripHandler(w http.ResponseWriter, r *http.R
 
 	userID := r.Header.Get("user_id")
 
-	if err := dhandler.driver.Start(tripID, userID); err != nil {
+	if err := dhandler.driver.Start(userID, tripID); err != nil {
 		http.Error(w, "Failed to start trip", http.StatusInternalServerError)
 		return
 	}
-
+	fmt.Println("all ok")
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -96,7 +100,7 @@ func (dhandler *DriverHandler) CancelTripHandler(w http.ResponseWriter, r *http.
 	userID := r.Header.Get("user_id")
 	reason := r.URL.Query().Get("reason")
 
-	if err := dhandler.driver.Cancel(tripID, userID, reason); err != nil {
+	if err := dhandler.driver.Cancel(userID, tripID, reason); err != nil {
 		http.Error(w, "Failed to cancel trip", http.StatusInternalServerError)
 		return
 	}
@@ -104,6 +108,7 @@ func (dhandler *DriverHandler) CancelTripHandler(w http.ResponseWriter, r *http.
 	w.WriteHeader(http.StatusOK)
 }
 
+// /6584149f0b80e9fe6de31ceb/cancel
 func (dhandler *DriverHandler) EndTripHandler(w http.ResponseWriter, r *http.Request) {
 	tripID, ok := mux.Vars(r)["trip_id"]
 	if !ok {
@@ -113,7 +118,7 @@ func (dhandler *DriverHandler) EndTripHandler(w http.ResponseWriter, r *http.Req
 
 	userID := r.Header.Get("user_id")
 
-	if err := dhandler.driver.End(tripID, userID); err != nil {
+	if err := dhandler.driver.End(userID, tripID); err != nil {
 		http.Error(w, "Failed to end trip", http.StatusInternalServerError)
 		return
 	}

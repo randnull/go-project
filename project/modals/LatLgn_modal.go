@@ -1,6 +1,6 @@
 package modals
 
-type LagLgn struct {
-	lat int
-	lgn int
+type Latlngtiteral struct {
+	Lat float64 `json:"lat"`
+	Lng float64 `json:"lng"`
 }
