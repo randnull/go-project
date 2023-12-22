@@ -43,7 +43,6 @@ func NewDriverRepository(URI string) *DriverRepository {
 		modals.Trip{
 			ID:       "1",
 			DriverID: "dwdwdadawdwa",
-			UserId:   "user_1",
 			From: modals.Latlngtiteral{
 				Lat: 40.7128,
 				Lng: -74.0060,
@@ -61,7 +60,6 @@ func NewDriverRepository(URI string) *DriverRepository {
 		modals.Trip{
 			ID:       "2",
 			DriverID: "driver_2",
-			UserId:   "user_2",
 			From: modals.Latlngtiteral{
 				Lat: 34.0522,
 				Lng: -118.2437,
@@ -91,9 +89,23 @@ func NewDriverRepository(URI string) *DriverRepository {
 }
 
 func (storage *DriverRepository) GetListTrip(user_id string) (*[]modals.Trip, error) {
-	log.Fatal("err")
-	fmt.Print("not implement")
-	return nil, nil
+	cur, err := storage.dbCollection.Find(context.TODO(), bson.M{})
+	if err != nil {
+		return nil, err
+	}
+
+	var trips []modals.Trip
+
+	for cur.Next(context.TODO()) {
+		var trip modals.Trip
+		err := cur.Decode(&trip)
+		if err != nil {
+			return nil, err
+		}
+		trips = append(trips, trip)
+	}
+
+	return &trips, nil
 }
 
 //func (storage *DriverRepository) PutNewTrip()
