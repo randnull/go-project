@@ -138,7 +138,7 @@ func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.
 		log.Fatal(err)
 	}
 
-	kafka_producer.Produce_data(tripID, tripdata)
+	kafka_producer.Produce_data(tripID, "accept", tripdata)
 
 	w.WriteHeader(http.StatusOK)
 	accept_successfulRequests.Inc()
@@ -160,6 +160,15 @@ func (dhandler *DriverHandler) StartTripHandler(w http.ResponseWriter, r *http.R
 		http.Error(w, "Failed to start trip", http.StatusInternalServerError)
 		return
 	}
+
+	tripdata, err := dhandler.driver.GetIdTrip(" ", tripID)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	kafka_producer.Produce_data(tripID, "started", tripdata)
+
 	fmt.Println("all ok")
 	w.WriteHeader(http.StatusOK)
 	start_successfulRequests.Inc()
@@ -182,6 +191,14 @@ func (dhandler *DriverHandler) CancelTripHandler(w http.ResponseWriter, r *http.
 		return
 	}
 
+	tripdata, err := dhandler.driver.GetIdTrip(" ", tripID)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	kafka_producer.Produce_data(tripID, "canceled", tripdata)
+
 	w.WriteHeader(http.StatusOK)
 	cancel_successfulRequests.Inc()
 	log.Println("CancelTripHandler - success")
@@ -201,6 +218,14 @@ func (dhandler *DriverHandler) EndTripHandler(w http.ResponseWriter, r *http.Req
 		http.Error(w, "Failed to end trip", http.StatusInternalServerError)
 		return
 	}
+
+	tripdata, err := dhandler.driver.GetIdTrip(" ", tripID)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	kafka_producer.Produce_data(tripID, "ended", tripdata)
 
 	w.WriteHeader(http.StatusOK)
 	end_successfulRequests.Inc()

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func Produce_data(trip_id string, trip *modals.Trip) {
+func Produce_data(trip_id string, act string, trip *modals.Trip) {
 	ctx := context.Background()
 
 	logger := log.Default()
@@ -25,10 +25,12 @@ func Produce_data(trip_id string, trip *modals.Trip) {
 	})
 	defer writer.Close()
 
+	type_now := "trip.event." + act + "."
+
 	m := modals.TripAnswer{
 		ID:              trip.ID,
 		Source:          "/trip",
-		Type:            "trip.event.accepted",
+		Type:            type_now,
 		DataContentType: "application/json",
 		Time:            time.Time{},
 		Data: modals.TripAnswerData{
