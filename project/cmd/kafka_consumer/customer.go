@@ -18,12 +18,6 @@ import (
 	"time"
 )
 
-type Teacher struct {
-	Lat    float64 `json:"Lat"`
-	Lng    float64 `json:"Lng"`
-	Radius float64 `json:"radius"`
-}
-
 func db() *mongo.Collection {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
 
@@ -68,7 +62,7 @@ func main() {
 				continue
 			}
 
-			teacher := Teacher{
+			teacher := modals.Req{
 				Lat:    message.Data.From.Lat,
 				Lng:    message.Data.From.Lng,
 				Radius: 1000,
@@ -79,7 +73,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			req, err := http.NewRequest("GET", "http://localhost:1516/drivers", bytes.NewReader(marshalled))
+			req, err := http.NewRequest("GET", "http://localhost:1518/drivers", bytes.NewReader(marshalled))
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -121,10 +115,18 @@ func main() {
 					Status: "DRIVER_GET_REQUEST",
 				}
 				fmt.Println("INSERT")
-				_, err := datab.InsertOne(context.TODO(), new_trip)
+				result, err := datab.InsertOne(context.TODO(), new_trip)
 				if err != nil {
 					log.Fatal(err)
 				}
+
+				// Check if the insertion was successful
+				if result.InsertedID != nil {
+					fmt.Printf("Inserted document with ID: %v\n", result.InsertedID)
+				} else {
+					fmt.Println("Insertion failed.")
+				}
+
 			}
 			time.Sleep(300 * time.Millisecond)
 		}

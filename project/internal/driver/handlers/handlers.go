@@ -6,8 +6,10 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
+	"log"
 	"net/http"
 	"project/internal/driver/errors"
+	"project/internal/driver/kafka"
 	"project/internal/driver/service"
 	"project/modals"
 )
@@ -127,6 +129,14 @@ func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.
 		http.Error(w, "Failed to accept trip", http.StatusInternalServerError)
 		return
 	}
+
+	tripdata, err := dhandler.driver.GetIdTrip(" ", tripID)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	kafka.Produce_data(tripID, tripdata)
 
 	w.WriteHeader(http.StatusOK)
 	accept_successfulRequests.Inc()
