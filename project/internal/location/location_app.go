@@ -36,6 +36,6 @@ func (a *App) Run() {
 	router.Handle("/metrics", promhttp.Handler())
 
 	addr := ":1515"
-	fmt.Printf("listen %s", addr)
+	fmt.Printf("listen %s\n", addr)
 	http.ListenAndServe(addr, router)
 }

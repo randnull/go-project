@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -96,6 +97,7 @@ func (lhandler *LocationHandler) GetDriversHandler(w http.ResponseWriter, r *htt
 	json.NewEncoder(w).Encode(driversInRadius)
 	w.WriteHeader(http.StatusOK)
 	getDrivers_successfulRequests.Inc()
+	fmt.Println("GetDriversHandler - success")
 }
 
 func (lhandler *LocationHandler) UpdateDriverLocationHandler(w http.ResponseWriter, r *http.Request) {
@@ -104,6 +106,7 @@ func (lhandler *LocationHandler) UpdateDriverLocationHandler(w http.ResponseWrit
 	driverID, ok := mux.Vars(r)["driver_id"]
 	if !ok {
 		http.Error(w, errors.InvalidDriverId.Error(), http.StatusBadRequest)
+		fmt.Println(errors.InvalidDriverId.Error())
 		return
 	}
 
@@ -111,14 +114,17 @@ func (lhandler *LocationHandler) UpdateDriverLocationHandler(w http.ResponseWrit
 	err := json.NewDecoder(r.Body).Decode(&locReq)
 	if err != nil {
 		http.Error(w, errors.InvalidLocation.Error(), 400)
+		fmt.Println(errors.InvalidLocation.Error())
 		return
 	}
 	driver, err := lhandler.location.UpdateDriverPosition(driverID, locReq.Lat, locReq.Lng)
 	if err != nil {
 		http.Error(w, errors.FailedToUpdatePosition.Error(), 500)
+		fmt.Println(errors.FailedToUpdatePosition.Error())
 		return
 	}
 	json.NewEncoder(w).Encode(driver)
 	w.WriteHeader(http.StatusOK)
 	updateDriverLocation_successfulRequests.Inc()
+	fmt.Println("UpdateDriverLocationHandler - success")
 }

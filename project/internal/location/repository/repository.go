@@ -54,6 +54,7 @@ func (storage *LocationRepository) GetAllDrivers() ([]modals.Driver, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("GetAllDrivers - success")
 	return drivers, nil
 }
 
@@ -63,6 +64,7 @@ func (storage *LocationRepository) GetDriverLocationById(driverID string) (*moda
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("GetDriverLocationById - success")
 	return driver, nil
 }
 
@@ -73,5 +75,6 @@ func (storage *LocationRepository) UpdateDriverPosition(driverID string, newLat,
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("Driver position updated successfully")
 	return driver, nil
 }
