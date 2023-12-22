@@ -47,19 +47,8 @@ func (a *App) Run() {
 
 	addr := ":23424"
 	log.Printf("Listen on %s\n\n", addr)
-
-	//kafka_prod.Cust(a.driver)
 	err := http.ListenAndServe(addr, router)
 	if err != nil {
 		log.Fatal(err)
 	}
-	//kafka_prod.Cust(a.driver)
-	//go func() {
-	//	fmt.Println("listen: 2555!")
-	//	if err := http.ListenAndServe(":2556", router); err != nil {
-	//		log.Fatal(err)
-	//	}
-	//}()
-	//
-	//fmt.Println("HTTP server started")
 }

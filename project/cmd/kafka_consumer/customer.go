@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/segmentio/kafka-go"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -57,7 +56,8 @@ func main() {
 			}
 
 			var message modals.KafkaMessage
-			if err := json.Unmarshal(msg.Value, &message); err != nil {
+			err = json.Unmarshal(msg.Value, &message)
+			if err != nil {
 				log.Printf("Failed to decode JSON: %s\n", err)
 				continue
 			}
@@ -82,7 +82,6 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			//defer res.Body.Close()
 
 			body, err := ioutil.ReadAll(res.Body)
 			if err != nil {
@@ -94,8 +93,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			println("!!!!!", message.ID)
-			fmt.Println(drivers)
+
 			for i := 0; i < len(drivers); i++ {
 				new_trip := modals.Trip{
 					ID:       message.ID,
@@ -114,19 +112,10 @@ func main() {
 					},
 					Status: "DRIVER_GET_REQUEST",
 				}
-				fmt.Println("INSERT")
-				result, err := datab.InsertOne(context.TODO(), new_trip)
+				_, err := datab.InsertOne(context.TODO(), new_trip)
 				if err != nil {
 					log.Fatal(err)
 				}
-
-				// Check if the insertion was successful
-				if result.InsertedID != nil {
-					fmt.Printf("Inserted document with ID: %v\n", result.InsertedID)
-				} else {
-					fmt.Println("Insertion failed.")
-				}
-
 			}
 			time.Sleep(300 * time.Millisecond)
 		}

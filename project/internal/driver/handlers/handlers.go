@@ -187,7 +187,6 @@ func (dhandler *DriverHandler) CancelTripHandler(w http.ResponseWriter, r *http.
 	log.Println("CancelTripHandler - success")
 }
 
-// /6584149f0b80e9fe6de31ceb/cancel
 func (dhandler *DriverHandler) EndTripHandler(w http.ResponseWriter, r *http.Request) {
 	end_allRequests.Inc()
 	tripID, ok := mux.Vars(r)["trip_id"]
