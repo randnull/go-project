@@ -39,6 +39,9 @@ func (a *App) Run() {
 	router.HandleFunc("/trips/{trip_id}/accept", a.server.AcceptTripHandler).Methods("POST")
 	router.HandleFunc("/trips/{trip_id}/start", a.server.StartTripHandler).Methods("POST")
 	router.HandleFunc("/trips/{trip_id}/end", a.server.EndTripHandler).Methods("POST")
+
+	router.HandleFunc("/trips/new", a.server.PutNewTripHandler).Methods("POST")
+
 	fmt.Println(" listen: 2555!")
 
 	//kafka.Cust(a.driver)

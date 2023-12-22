@@ -247,7 +247,7 @@ func (storage *DriverRepository) StartTrip(user_id string, trip_id string) error
 
 func (storage *DriverRepository) PutNewTrip(trip modals.Trip) error {
 	//trip.ID = primitive.NewObjectID().Hex()
-	log.Fatal("we")
+	//log.Fatal("we")
 	_, err := storage.dbCollection.InsertOne(context.TODO(), trip)
 	if err != nil {
 		log.Fatal(err)

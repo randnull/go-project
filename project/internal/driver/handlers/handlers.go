@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"project/internal/driver/errors"
 	"project/internal/driver/service"
+	"project/modals"
 )
 
 type DriverHandler struct {
@@ -120,6 +121,23 @@ func (dhandler *DriverHandler) EndTripHandler(w http.ResponseWriter, r *http.Req
 
 	if err := dhandler.driver.End(userID, tripID); err != nil {
 		http.Error(w, "Failed to end trip", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (dhandler *DriverHandler) PutNewTripHandler(w http.ResponseWriter, r *http.Request) {
+	var trip modals.Trip
+
+	err := json.NewDecoder(r.Body).Decode(&trip)
+	if err != nil {
+		http.Error(w, "Invalid trip", http.StatusBadRequest)
+		return
+	}
+
+	if err := dhandler.driver.PutNewTrip(trip); err != nil {
+		http.Error(w, "Failed to put new trip", http.StatusInternalServerError)
 		return
 	}
 
