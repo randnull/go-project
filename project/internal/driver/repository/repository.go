@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -37,7 +36,7 @@ func NewDriverRepository(URI string) *DriverRepository {
 
 	mongoDb := client.Database("driver")
 	collectionTrip := mongoDb.Collection("trip")
-	fmt.Println("Testing data begin...")
+	log.Println("Testing data begin...")
 	//Testing data begin... !!!!! NEED TO BE REMOVED IN PRODUCT !!!!
 	trips := []interface{}{
 		modals.Trip{
@@ -78,7 +77,7 @@ func NewDriverRepository(URI string) *DriverRepository {
 
 	_, err = collectionTrip.InsertMany(context.TODO(), trips)
 	if err != nil {
-		fmt.Println("bad")
+		log.Fatal(err)
 	}
 	//Testing data end
 	log.Println("Testing data end")
@@ -110,8 +109,8 @@ func (storage *DriverRepository) GetListTrip(user_id string) (*[]modals.Trip, er
 }
 
 func (storage *DriverRepository) GetTripById(user_id string, trip_id string) (*modals.Trip, error) {
-	fmt.Println("GetTripById with user_id: trip_id")
-	fmt.Println(user_id, trip_id)
+	log.Println("GetTripById with user_id: trip_id")
+	log.Println(user_id, trip_id)
 
 	objectTripId, err := primitive.ObjectIDFromHex(trip_id)
 

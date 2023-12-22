@@ -14,13 +14,13 @@ type App struct {
 	repo     *repository.LocationRepository
 	server   *handlers.LocationHandler
 	location *service.Location
-	//closer   io.Closer
+	// closer   io.Closer
 }
 
 func NewApp() *App {
-	//cfg, _ := config.FromEnv()
-	//tracer, closer, _ := cfg.NewTracer(config.Logger(jaeger.StdLogger))
-	//opentracing.SetGlobalTracer(tracer)
+	// cfg, _ := config.FromEnv()
+	// tracer, closer, _ := cfg.NewTracer(config.Logger(jaeger.StdLogger))
+	// opentracing.SetGlobalTracer(tracer)
 
 	repo := repository.NewLocationRepository()
 	serv := service.NewLocationService(repo)
@@ -30,7 +30,7 @@ func NewApp() *App {
 		repo:     repo,
 		server:   server,
 		location: serv,
-		//closer:   closer,
+		// closer:   closer,
 	}
 	return apl
 }
@@ -42,6 +42,6 @@ func (a *App) Run() {
 	router.Handle("/metrics", promhttp.Handler())
 
 	addr := ":1515"
-	log.Println("Listen on %s\n", addr)
+	log.Printf("Listen on %s\n", addr)
 	http.ListenAndServe(addr, router)
 }
