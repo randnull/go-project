@@ -36,51 +36,6 @@ func NewDriverRepository(URI string) *DriverRepository {
 
 	mongoDb := client.Database("driver")
 	collectionTrip := mongoDb.Collection("trip")
-	log.Println("Testing data begin...")
-	//Testing data begin... !!!!! NEED TO BE REMOVED IN PRODUCT !!!!
-	trips := []interface{}{
-		modals.Trip{
-			ID:       "1",
-			DriverID: "dwdwdadawdwa",
-			From: modals.Latlngtiteral{
-				Lat: 40.7128,
-				Lng: -74.0060,
-			},
-			To: modals.Latlngtiteral{
-				Lat: 34.0522,
-				Lng: -118.2437,
-			},
-			Price: modals.Money{
-				Amount:   25.0,
-				Currency: "USD",
-			},
-			Status: "completed",
-		},
-		modals.Trip{
-			ID:       "2",
-			DriverID: "driver_2",
-			From: modals.Latlngtiteral{
-				Lat: 34.0522,
-				Lng: -118.2437,
-			},
-			To: modals.Latlngtiteral{
-				Lat: 37.7749,
-				Lng: -122.4194,
-			},
-			Price: modals.Money{
-				Amount:   30.0,
-				Currency: "USD",
-			},
-			Status: "in_progress",
-		},
-	}
-
-	_, err = collectionTrip.InsertMany(context.TODO(), trips)
-	if err != nil {
-		log.Fatal(err)
-	}
-	//Testing data end
-	log.Println("Testing data end")
 	log.Println("Database is ready!")
 	return &DriverRepository{
 		dbCollection: collectionTrip,
