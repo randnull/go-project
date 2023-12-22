@@ -5,6 +5,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
+	"os"
 	"project/internal/location/handlers"
 	"project/internal/location/repository"
 	"project/internal/location/service"
@@ -41,7 +42,7 @@ func (a *App) Run() {
 	router.HandleFunc("/drivers/{driver_id}/location", a.server.UpdateDriverLocationHandler).Methods("POST")
 	router.Handle("/metrics", promhttp.Handler())
 
-	addr := ":1515"
+	addr := os.Getenv("addr_location")
 	log.Printf("Listen on %s\n", addr)
 	http.ListenAndServe(addr, router)
 }
