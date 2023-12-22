@@ -46,10 +46,11 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGTERM, os.Interrupt)
 	defer cancel()
 	datab := db()
+	client := http.Client{Timeout: 10 * time.Second}
 	go func() {
 		reader := kafka.NewReader(kafka.ReaderConfig{
 			Brokers:        []string{"127.0.0.1:29092"},
-			Topic:          "demo",
+			Topic:          "getter",
 			GroupID:        "my-group",
 			SessionTimeout: time.Second * 6,
 		})
@@ -60,13 +61,12 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+
 			var message modals.KafkaMessage
 			if err := json.Unmarshal(msg.Value, &message); err != nil {
 				log.Printf("Failed to decode JSON: %s\n", err)
 				continue
 			}
-
-			fmt.Printf("Received message: %+v\n", message.Data.From)
 
 			teacher := Teacher{
 				Lat:    message.Data.From.Lat,
@@ -79,18 +79,16 @@ func main() {
 				log.Fatal(err)
 			}
 
-			req, err := http.NewRequest("GET", "http://localhost:1515/drivers", bytes.NewReader(marshalled))
+			req, err := http.NewRequest("GET", "http://localhost:1516/drivers", bytes.NewReader(marshalled))
 			if err != nil {
 				log.Fatal(err)
 			}
-
-			client := http.Client{Timeout: 10 * time.Second}
 
 			res, err := client.Do(req)
 			if err != nil {
 				log.Fatal(err)
 			}
-			defer res.Body.Close()
+			//defer res.Body.Close()
 
 			body, err := ioutil.ReadAll(res.Body)
 			if err != nil {
@@ -102,12 +100,12 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			println("!!!!!", message.ID)
 			fmt.Println(drivers)
 			for i := 0; i < len(drivers); i++ {
 				new_trip := modals.Trip{
-					ID:       "1",
+					ID:       message.ID,
 					DriverID: drivers[i].ID,
-					UserId:   "user_1324",
 					From: modals.Latlngtiteral{
 						Lat: message.Data.From.Lat,
 						Lng: message.Data.From.Lng,
@@ -123,7 +121,7 @@ func main() {
 					Status: "DRIVER_GET_REQUEST",
 				}
 				fmt.Println("INSERT")
-				_, err = datab.InsertOne(context.TODO(), new_trip)
+				_, err := datab.InsertOne(context.TODO(), new_trip)
 				if err != nil {
 					log.Fatal(err)
 				}

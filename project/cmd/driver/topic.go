@@ -6,10 +6,10 @@ import (
 	"log"
 )
 
-func top() {
+func main() {
 	ctx := context.Background()
 
-	name := "demo"
+	name := "getter"
 	partitions := 1
 	replicas := 1
 
@@ -18,6 +18,19 @@ func top() {
 		log.Fatal(err)
 	}
 	defer conn.Close()
+
+	err = conn.CreateTopics(kafka.TopicConfig{
+		Topic:             name,
+		NumPartitions:     partitions,
+		ReplicationFactor: replicas,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	name = "setter"
+	partitions = 1
+	replicas = 1
 
 	err = conn.CreateTopics(kafka.TopicConfig{
 		Topic:             name,
