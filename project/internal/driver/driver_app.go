@@ -16,7 +16,7 @@ type App struct {
 }
 
 func NewApp() *App {
-	repo := repository.NewDriverRepository("mongodb://my-mongodb:27017")
+	repo := repository.NewDriverRepository("mongodb://localhost:27017") //my-mongodb
 	driv := service.NewDriverService(repo)
 	server := handlers.NewHandler(driv)
 
@@ -42,7 +42,7 @@ func (a *App) Run() {
 
 	router.HandleFunc("/trips/new", a.server.PutNewTripHandler).Methods("POST")
 
-	addr := ":2565"
+	addr := ":2567"
 	fmt.Printf(" listen %s\n", addr)
 
 	//kafka_prod.Cust(a.driver)

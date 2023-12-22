@@ -3,8 +3,12 @@ package modals
 import "time"
 
 type TripData struct {
-	TripID   string `json:"trip_id"`
-	DriverID string `json:"driver_id"`
+	TripID  string        `json:"trip_id"`
+	OfferID string        `json:"offer_id"`
+	Price   Money         `json:"price"`
+	Status  string        `json:"status"`
+	From    Latlngtiteral `json:"from"`
+	To      Latlngtiteral `json:"to"`
 }
 
 type KafkaMessage struct {
