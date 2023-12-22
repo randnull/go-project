@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
+	"log"
 	"math"
 	"net/http"
 	"project/internal/location/errors"
@@ -53,22 +55,14 @@ func NewHandler(location *service.Location) *LocationHandler {
 	}
 }
 
-//func (lhandler *LocationHandler) GetDriversHandler(w http.ResponseWriter, r *http.Request) {
-//	drivers, err := lhandler.location.GetAllDrivers()
-//	if err != nil {
-//		http.Error(w, errors.DriversNotFound.Error(), 404)
-//		return
-//	}
-//	json.NewEncoder(w).Encode(drivers)
-//	w.Header().Set("Content-Type", "application/json")
-//	w.WriteHeader(http.StatusOK)
-//}
-
 func calculateDistance(lat1 float64, lon1 float64, lat2 float64, lon2 float64) float64 {
 	return math.Sqrt(math.Pow((lat2-lat1), 2) + math.Pow((lon2-lon1), 2))
 }
 
 func (lhandler *LocationHandler) GetDriversHandler(w http.ResponseWriter, r *http.Request) {
+	span := opentracing.StartSpan("GetDriversHandler")
+	defer span.Finish()
+
 	getDrivers_allRequests.Inc()
 
 	var locReq LocationRequest
@@ -97,10 +91,13 @@ func (lhandler *LocationHandler) GetDriversHandler(w http.ResponseWriter, r *htt
 	json.NewEncoder(w).Encode(driversInRadius)
 	w.WriteHeader(http.StatusOK)
 	getDrivers_successfulRequests.Inc()
-	fmt.Println("GetDriversHandler - success")
+	log.Println("GetDriversHandler - success")
 }
 
 func (lhandler *LocationHandler) UpdateDriverLocationHandler(w http.ResponseWriter, r *http.Request) {
+	span := opentracing.StartSpan("UpdateDriverLocationHandler")
+	defer span.Finish()
+
 	updateDriverLocation_allRequests.Inc()
 
 	driverID, ok := mux.Vars(r)["driver_id"]
@@ -126,5 +123,5 @@ func (lhandler *LocationHandler) UpdateDriverLocationHandler(w http.ResponseWrit
 	json.NewEncoder(w).Encode(driver)
 	w.WriteHeader(http.StatusOK)
 	updateDriverLocation_successfulRequests.Inc()
-	fmt.Println("UpdateDriverLocationHandler - success")
+	log.Println("UpdateDriverLocationHandler - success")
 }

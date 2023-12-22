@@ -1,9 +1,9 @@
 package location_app
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"log"
 	"net/http"
 	"project/internal/location/handlers"
 	"project/internal/location/repository"
@@ -14,9 +14,14 @@ type App struct {
 	repo     *repository.LocationRepository
 	server   *handlers.LocationHandler
 	location *service.Location
+	//closer   io.Closer
 }
 
 func NewApp() *App {
+	//cfg, _ := config.FromEnv()
+	//tracer, closer, _ := cfg.NewTracer(config.Logger(jaeger.StdLogger))
+	//opentracing.SetGlobalTracer(tracer)
+
 	repo := repository.NewLocationRepository()
 	serv := service.NewLocationService(repo)
 	server := handlers.NewHandler(serv)
@@ -25,6 +30,7 @@ func NewApp() *App {
 		repo:     repo,
 		server:   server,
 		location: serv,
+		//closer:   closer,
 	}
 	return apl
 }
@@ -36,6 +42,6 @@ func (a *App) Run() {
 	router.Handle("/metrics", promhttp.Handler())
 
 	addr := ":1515"
-	fmt.Printf("listen %s\n", addr)
+	log.Println("Listen on %s\n", addr)
 	http.ListenAndServe(addr, router)
 }

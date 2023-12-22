@@ -81,8 +81,8 @@ func NewDriverRepository(URI string) *DriverRepository {
 		fmt.Println("bad")
 	}
 	//Testing data end
-	fmt.Println("Testing data end")
-	fmt.Println("Database is ready!")
+	log.Println("Testing data end")
+	log.Println("Database is ready!")
 	return &DriverRepository{
 		dbCollection: collectionTrip,
 	}
@@ -104,6 +104,7 @@ func (storage *DriverRepository) GetListTrip(user_id string) (*[]modals.Trip, er
 		}
 		trips = append(trips, trip)
 	}
+	log.Println("GetListTrip - success")
 
 	return &trips, nil
 }
@@ -127,6 +128,7 @@ func (storage *DriverRepository) GetTripById(user_id string, trip_id string) (*m
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println("GetTripById - success")
 
 	return &answerTrip, nil
 }
@@ -158,6 +160,7 @@ func (storage *DriverRepository) CancelTrip(user_id string, trip_id string, reas
 		log.Fatal(err)
 		return errors.FailedToCancelTrip
 	}
+	log.Println("CancelTrip - success")
 
 	return err
 }
@@ -189,7 +192,7 @@ func (storage *DriverRepository) EndTrip(user_id string, trip_id string) error {
 		log.Fatal(err)
 		return errors.FailedToEndTrip
 	}
-
+	log.Println("EndTrip - success")
 	return err
 }
 
@@ -220,7 +223,7 @@ func (storage *DriverRepository) AcceptTrip(user_id string, trip_id string) erro
 		return errors.FailedToAcceptTrip
 		log.Fatal(err)
 	}
-
+	log.Println("AcceptTrip - success")
 	return err
 }
 
@@ -251,7 +254,7 @@ func (storage *DriverRepository) StartTrip(user_id string, trip_id string) error
 		return errors.FailedToStartTrip
 		log.Fatal(err)
 	}
-
+	log.Println("StartTrip - success")
 	return err
 }
 
@@ -261,6 +264,6 @@ func (storage *DriverRepository) PutNewTrip(trip modals.Trip) error {
 		log.Fatal(err)
 		return err
 	}
-
+	log.Println("PutNewTrip - success")
 	return nil
 }

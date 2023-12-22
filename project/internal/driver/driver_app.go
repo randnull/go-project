@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"log"
 	"net/http"
 	"project/internal/driver/handlers"
 	"project/internal/driver/repository"
@@ -33,7 +34,7 @@ func NewApp() *App {
 func (a *App) Run() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/trips/", a.server.GetAllTripHandler).Methods("GET")
+	router.HandleFunc("/trips", a.server.GetAllTripHandler).Methods("GET")
 	router.HandleFunc("/trips/{trip_id}", a.server.GetTripByIdHandler).Methods("GET")
 
 	router.HandleFunc("/trips/{trip_id}/cancel", a.server.CancelTripHandler).Methods("POST")
@@ -45,12 +46,12 @@ func (a *App) Run() {
 	router.Handle("/metrics", promhttp.Handler())
 
 	addr := ":23424"
-	fmt.Printf(" listen %s\n", addr)
+	log.Printf("Listen on %s\n\n", addr)
 
 	//kafka_prod.Cust(a.driver)
 	err := http.ListenAndServe(addr, router)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 	//kafka_prod.Cust(a.driver)
 	//go func() {

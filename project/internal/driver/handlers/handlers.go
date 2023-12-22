@@ -89,6 +89,7 @@ func (dhandler *DriverHandler) GetAllTripHandler(w http.ResponseWriter, r *http.
 	json.NewEncoder(w).Encode(trips)
 	w.WriteHeader(http.StatusOK)
 	getAllTrip_successfulRequests.Inc()
+	log.Println("GetAllTripHandler - success")
 }
 
 func (dhandler *DriverHandler) GetTripByIdHandler(w http.ResponseWriter, r *http.Request) {
@@ -113,6 +114,7 @@ func (dhandler *DriverHandler) GetTripByIdHandler(w http.ResponseWriter, r *http
 	json.NewEncoder(w).Encode(trip)
 	w.WriteHeader(http.StatusOK)
 	getTripById_successfulRequests.Inc()
+	log.Println("GetTripByIdHandler - success")
 }
 
 func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.Request) {
@@ -140,6 +142,7 @@ func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.
 
 	w.WriteHeader(http.StatusOK)
 	accept_successfulRequests.Inc()
+	log.Println("AcceptTripHandler - success")
 }
 
 func (dhandler *DriverHandler) StartTripHandler(w http.ResponseWriter, r *http.Request) {
@@ -160,6 +163,7 @@ func (dhandler *DriverHandler) StartTripHandler(w http.ResponseWriter, r *http.R
 	fmt.Println("all ok")
 	w.WriteHeader(http.StatusOK)
 	start_successfulRequests.Inc()
+	log.Println("StartTripHandler - success")
 }
 
 func (dhandler *DriverHandler) CancelTripHandler(w http.ResponseWriter, r *http.Request) {
@@ -180,6 +184,7 @@ func (dhandler *DriverHandler) CancelTripHandler(w http.ResponseWriter, r *http.
 
 	w.WriteHeader(http.StatusOK)
 	cancel_successfulRequests.Inc()
+	log.Println("CancelTripHandler - success")
 }
 
 // /6584149f0b80e9fe6de31ceb/cancel
@@ -200,6 +205,7 @@ func (dhandler *DriverHandler) EndTripHandler(w http.ResponseWriter, r *http.Req
 
 	w.WriteHeader(http.StatusOK)
 	end_successfulRequests.Inc()
+	log.Println("EndTripHandler - success")
 }
 
 func (dhandler *DriverHandler) PutNewTripHandler(w http.ResponseWriter, r *http.Request) {
@@ -217,4 +223,5 @@ func (dhandler *DriverHandler) PutNewTripHandler(w http.ResponseWriter, r *http.
 	}
 
 	w.WriteHeader(http.StatusOK)
+	log.Println("PutNewTripHandler - success")
 }
