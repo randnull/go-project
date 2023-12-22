@@ -42,7 +42,7 @@ func NewDriverRepository(URI string) *DriverRepository {
 	trips := []interface{}{
 		modals.Trip{
 			ID:       "1",
-			DriverID: "driver_1",
+			DriverID: "dwdwdadawdwa",
 			UserId:   "user_1",
 			From: modals.Latlngtiteral{
 				Lat: 40.7128,

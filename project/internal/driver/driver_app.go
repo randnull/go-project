@@ -42,12 +42,12 @@ func (a *App) Run() {
 
 	router.HandleFunc("/trips/new", a.server.PutNewTripHandler).Methods("POST")
 
-	addr := ":2561"
+	addr := ":2564"
 	fmt.Printf(" listen %s\n", addr)
 
-	//kafka.Cust(a.driver)
+	//kafka_prod.Cust(a.driver)
 	http.ListenAndServe(addr, router)
-	//kafka.Cust(a.driver)
+	//kafka_prod.Cust(a.driver)
 	//go func() {
 	//	fmt.Println("listen: 2555!")
 	//	if err := http.ListenAndServe(":2556", router); err != nil {

@@ -37,7 +37,7 @@ type TripEvent struct {
 	Data            TripData  `json:"data"`
 }
 
-func producer() {
+func main() {
 	ctx := context.Background()
 
 	logger := log.Default()

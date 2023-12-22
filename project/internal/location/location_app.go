@@ -33,7 +33,7 @@ func (a *App) Run() {
 	router.HandleFunc("/drivers", a.server.GetDriversHandler).Methods("GET")
 	router.HandleFunc("/drivers/{driver_id}/location", a.server.UpdateDriverLocationHandler).Methods("POST")
 
-	addr := ":1544"
+	addr := ":1512"
 	fmt.Printf("listen %s", addr)
 	http.ListenAndServe(addr, router)
 }

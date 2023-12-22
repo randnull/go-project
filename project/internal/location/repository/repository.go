@@ -45,6 +45,18 @@ func NewLocationRepository() *LocationRepository {
 		INSERT INTO drivers (lat, lng, name, auto) VALUES ($1, $2, $3, $4)
 	`
 	_, err = db.Exec(insertDataQuery, 123.23, 123.42, "ivan", "toyta")
+	_, err = db.Exec(insertDataQuery, 125.23, 121.42, "misha", "bmw")
+	_, err = db.Exec(insertDataQuery, 130.0, 135.0, "anna", "honda")
+	_, err = db.Exec(insertDataQuery, 140.0, 145.0, "john", "audi")
+	_, err = db.Exec(insertDataQuery, 150.0, 155.0, "emily", "mercedes")
+	_, err = db.Exec(insertDataQuery, 160.0, 165.0, "alex", "volkswagen")
+	_, err = db.Exec(insertDataQuery, 170.0, 175.0, "olivia", "subaru")
+	_, err = db.Exec(insertDataQuery, 180.0, 185.0, "liam", "porsche")
+	_, err = db.Exec(insertDataQuery, 40.7128, -74.0060, "misha", "toyota")
+	_, err = db.Exec(insertDataQuery, 34.0522, -118.2437, "sasha", "bmw")
+	_, err = db.Exec(insertDataQuery, 51.509865, -0.118092, "Ya", "honda")
+	_, err = db.Exec(insertDataQuery, 48.8566, 2.3522, "Kirill", "audi")
+
 	if err != nil {
 		log.Fatal(err)
 	}

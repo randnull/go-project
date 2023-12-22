@@ -8,6 +8,6 @@ func main() {
 	a := driver_app.NewApp()
 	a.Run()
 	//producer()
-	//kafka.Prok()
-	//w := kafka
+	//kafka_prod.Prok()
+	//w := kafka_prod
 }
