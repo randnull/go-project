@@ -1,6 +1,7 @@
 package location_app
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"project/internal/location/handlers"
@@ -32,5 +33,7 @@ func (a *App) Run() {
 	router.HandleFunc("/drivers", a.server.GetDriversHandler).Methods("GET")
 	router.HandleFunc("/drivers/{driver_id}/location", a.server.UpdateDriverLocationHandler).Methods("POST")
 
-	http.ListenAndServe(":1544", router)
+	addr := ":1544"
+	fmt.Printf("listen %s", addr)
+	http.ListenAndServe(addr, router)
 }
