@@ -9,12 +9,26 @@ import (
 	"time"
 )
 
-type TripData struct {
-	TripID   string `json:"trip_id"`
-	DriverID string `json:"driver_id"`
+type Price struct {
+	Currency string `json:"currency"`
+	Amount   int    `json:"amount"`
 }
 
-type MessagePayload struct {
+type Location struct {
+	Lat float64 `json:"lat"`
+	Lng float64 `json:"lng"`
+}
+
+type TripData struct {
+	TripID  string   `json:"trip_id"`
+	OfferID string   `json:"offer_id"`
+	Price   Price    `json:"price"`
+	Status  string   `json:"status"`
+	From    Location `json:"from"`
+	To      Location `json:"to"`
+}
+
+type TripEvent struct {
 	ID              string    `json:"id"`
 	Source          string    `json:"source"`
 	Type            string    `json:"type"`
@@ -38,15 +52,28 @@ func main() {
 	})
 	defer writer.Close()
 
-	m := MessagePayload{
+	m := TripEvent{
 		ID:              "284655d6-0190-49e7-34e9-9b4060acc261",
-		Source:          "/driver",
-		Type:            "trip.command.accept",
+		Source:          "/trip",
+		Type:            "trip.event.created",
 		DataContentType: "application/json",
-		Time:            time.Now(),
+		Time:            time.Date(2023, 11, 9, 17, 31, 0, 0, time.UTC),
 		Data: TripData{
-			TripID:   "284655d6-0190-49e7-34e9-9b4060acc260",
-			DriverID: "42d6142f-c27e-4c73-bd3a-0051c440aecb",
+			TripID:  "e82c42d6-b86f-4e2a-93a2-858413acb148",
+			OfferID: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InN0cmluZyIsImZyb20iOnsibGF0IjowLCJsbmciOjB9LCJ0byI6eyJsYXQiOjAsImxuZyI6MH0sImNsaWVudF9pZCI6InN0cmluZyIsInByaWNlIjp7ImFtb3VudCI6OTkuOTUsImN1cnJlbmN5IjoiUlVCIn19.fg0Bv2ONjT4r8OgFqJ2tpv67ar7pUih2LhDRCRhWW3c",
+			Price: Price{
+				Currency: "RUB",
+				Amount:   100,
+			},
+			Status: "DRIVER_SEARCH",
+			From: Location{
+				Lat: 2340,
+				Lng: 0,
+			},
+			To: Location{
+				Lat: 234234,
+				Lng: 234234234235,
+			},
 		},
 	}
 

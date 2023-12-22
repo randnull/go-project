@@ -13,12 +13,26 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-type TripData struct {
-	TripID   string `json:"trip_id"`
-	DriverID string `json:"driver_id"`
+type Price struct {
+	Currency string `json:"currency"`
+	Amount   int    `json:"amount"`
 }
 
-type MessagePayload struct {
+type Location struct {
+	Lat float64 `json:"lat"`
+	Lng float64 `json:"lng"`
+}
+
+type TripData struct {
+	TripID  string   `json:"trip_id"`
+	OfferID string   `json:"offer_id"`
+	Price   Price    `json:"price"`
+	Status  string   `json:"status"`
+	From    Location `json:"from"`
+	To      Location `json:"to"`
+}
+
+type TripEvent struct {
 	ID              string    `json:"id"`
 	Source          string    `json:"source"`
 	Type            string    `json:"type"`
@@ -45,13 +59,14 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			var message MessagePayload
+			var message TripEvent
 			if err := json.Unmarshal(msg.Value, &message); err != nil {
 				log.Printf("Failed to decode JSON: %s\n", err)
 				continue
 			}
 
-			fmt.Printf("Received message: %+v\n", message)
+			fmt.Printf("Received message: %+v\n", message.Data.To)
+			//в бд
 			time.Sleep(300 * time.Millisecond)
 		}
 	}()
