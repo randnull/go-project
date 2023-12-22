@@ -1,0 +1,35 @@
+version: '3'
+services:
+  my-mongodb:
+    image: mongo
+    container_name: my-mongodb
+    ports:
+      - 27017:27017
+
+  postgres-container:
+    image: postgres:latest
+    container_name: postgres-container
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=driver
+
+  my-location-service:
+    build:
+      context: .
+      dockerfile: internal/location/Dockerfile
+    ports:
+      - 1544:1544
+    depends_on:
+      - postgres-container
+
+  my-driver-service:
+    build:
+      context: .
+      dockerfile: internal/driver/Dockerfile
+    ports:
+      - 2561:2561
+    depends_on:
+      - my-mongodb

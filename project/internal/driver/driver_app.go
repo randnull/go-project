@@ -16,7 +16,7 @@ type App struct {
 }
 
 func NewApp() *App {
-	repo := repository.NewDriverRepository("mongodb://127.0.0.1:27017")
+	repo := repository.NewDriverRepository("mongodb://my-mongodb:27017")
 	driv := service.NewDriverService(repo)
 	server := handlers.NewHandler(driv)
 

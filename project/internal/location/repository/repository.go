@@ -15,7 +15,7 @@ type LocationRepository struct {
 }
 
 func NewLocationRepository() *LocationRepository {
-	db, err := sqlx.Open("postgres", "postgres://postgres:admin@localhost:5432/driver?sslmode=disable")
+	db, err := sqlx.Open("postgres", "postgres://postgres:admin@postgres-container:5432/driver?sslmode=disable")
 
 	if err != nil {
 		log.Fatal(err)
