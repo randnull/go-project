@@ -3,6 +3,7 @@ package driver_app
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
 	"project/internal/driver/handlers"
 	"project/internal/driver/repository"
@@ -41,6 +42,7 @@ func (a *App) Run() {
 	router.HandleFunc("/trips/{trip_id}/end", a.server.EndTripHandler).Methods("POST")
 
 	router.HandleFunc("/trips/new", a.server.PutNewTripHandler).Methods("POST")
+	router.Handle("/metrics", promhttp.Handler())
 
 	addr := ":2567"
 	fmt.Printf(" listen %s\n", addr)

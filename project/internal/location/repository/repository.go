@@ -28,7 +28,7 @@ func NewLocationRepository() *LocationRepository {
 		log.Fatal(err)
 	}
 
-	migrate, err := os.ReadFile("/Users/kirillgorunov/Documents/go-project/project/internal/location/repository/init.sql")
+	migrate, err := os.ReadFile("internal/location/repository/init.sql")
 	if err != nil {
 		log.Fatal(err)
 	}

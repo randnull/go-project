@@ -3,11 +3,32 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"math"
 	"net/http"
 	"project/internal/location/errors"
 	"project/internal/location/service"
 	"project/modals"
+)
+
+var (
+	getDrivers_allRequests = promauto.NewCounter(prometheus.CounterOpts{
+		Namespace: "counters_getDrivers", Name: "allRequests", Help: "GetDrivers all requests counter",
+	},
+	)
+	getDrivers_successfulRequests = promauto.NewCounter(prometheus.CounterOpts{
+		Namespace: "counters_getDrivers", Name: "successfulRequest", Help: "GetDrivers successful requests counter",
+	},
+	)
+	updateDriverLocation_allRequests = promauto.NewCounter(prometheus.CounterOpts{
+		Namespace: "counters_updateDriverLocation", Name: "allRequests", Help: "UpdateDriverLocation all requests counter",
+	},
+	)
+	updateDriverLocation_successfulRequests = promauto.NewCounter(prometheus.CounterOpts{
+		Namespace: "counters_updateDriverLocation", Name: "successfulRequest", Help: "UpdateDriverLocation successful requests counter",
+	},
+	)
 )
 
 type LatLngLiteral struct {
@@ -47,6 +68,8 @@ func calculateDistance(lat1 float64, lon1 float64, lat2 float64, lon2 float64) f
 }
 
 func (lhandler *LocationHandler) GetDriversHandler(w http.ResponseWriter, r *http.Request) {
+	getDrivers_allRequests.Inc()
+
 	var locReq LocationRequest
 
 	err := json.NewDecoder(r.Body).Decode(&locReq)
@@ -72,9 +95,12 @@ func (lhandler *LocationHandler) GetDriversHandler(w http.ResponseWriter, r *htt
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(driversInRadius)
 	w.WriteHeader(http.StatusOK)
+	getDrivers_successfulRequests.Inc()
 }
 
 func (lhandler *LocationHandler) UpdateDriverLocationHandler(w http.ResponseWriter, r *http.Request) {
+	updateDriverLocation_allRequests.Inc()
+
 	driverID, ok := mux.Vars(r)["driver_id"]
 	if !ok {
 		http.Error(w, errors.InvalidDriverId.Error(), http.StatusBadRequest)
@@ -94,4 +120,5 @@ func (lhandler *LocationHandler) UpdateDriverLocationHandler(w http.ResponseWrit
 	}
 	json.NewEncoder(w).Encode(driver)
 	w.WriteHeader(http.StatusOK)
+	updateDriverLocation_successfulRequests.Inc()
 }

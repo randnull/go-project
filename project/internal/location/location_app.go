@@ -3,6 +3,7 @@ package location_app
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
 	"project/internal/location/handlers"
 	"project/internal/location/repository"
@@ -32,6 +33,7 @@ func (a *App) Run() {
 	router := mux.NewRouter()
 	router.HandleFunc("/drivers", a.server.GetDriversHandler).Methods("GET")
 	router.HandleFunc("/drivers/{driver_id}/location", a.server.UpdateDriverLocationHandler).Methods("POST")
+	router.Handle("/metrics", promhttp.Handler())
 
 	addr := ":1515"
 	fmt.Printf("listen %s", addr)
