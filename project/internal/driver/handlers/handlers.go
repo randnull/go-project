@@ -9,7 +9,7 @@ import (
 	"log"
 	"net/http"
 	"project/internal/driver/errors"
-	"project/internal/driver/kafka"
+	"project/internal/driver/kafka_producer"
 	"project/internal/driver/service"
 	"project/modals"
 )
@@ -136,7 +136,7 @@ func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.
 		log.Fatal(err)
 	}
 
-	kafka.Produce_data(tripID, tripdata)
+	kafka_producer.Produce_data(tripID, tripdata)
 
 	w.WriteHeader(http.StatusOK)
 	accept_successfulRequests.Inc()
