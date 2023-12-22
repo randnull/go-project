@@ -67,16 +67,16 @@ func main() {
 			},
 			Status: "DRIVER_SEARCH",
 			From: Location{
-				Lat: 2340,
+				Lat: 0,
 				Lng: 0,
 			},
 			To: Location{
-				Lat: 234234,
-				Lng: 234234234235,
+				Lat: 0,
+				Lng: 0,
 			},
 		},
 	}
-
+	//fmt.Println("success")
 	messageBytes, err := json.Marshal(m)
 	err = writer.WriteMessages(ctx, kafka.Message{Key: []byte(strconv.Itoa(0)), Value: messageBytes})
 	if err != nil {

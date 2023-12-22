@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func main() {
+func top() {
 	ctx := context.Background()
 
 	name := "demo"

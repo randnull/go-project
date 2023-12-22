@@ -40,5 +40,16 @@ func (a *App) Run() {
 	router.HandleFunc("/trips/{trip_id}/start", a.server.StartTripHandler).Methods("POST")
 	router.HandleFunc("/trips/{trip_id}/end", a.server.EndTripHandler).Methods("POST")
 	fmt.Println(" listen: 2555!")
-	http.ListenAndServe(":2555", router)
+
+	//kafka.Cust(a.driver)
+	http.ListenAndServe(":2561", router)
+	//kafka.Cust(a.driver)
+	//go func() {
+	//	fmt.Println("listen: 2555!")
+	//	if err := http.ListenAndServe(":2556", router); err != nil {
+	//		log.Fatal(err)
+	//	}
+	//}()
+	//
+	//fmt.Println("HTTP server started")
 }
