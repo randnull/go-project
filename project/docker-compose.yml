@@ -15,21 +15,28 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=driver
+    healthcheck:
+      test: ["CMD", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
   my-location-service:
     build:
       context: .
       dockerfile: internal/location/Dockerfile
     ports:
-      - 1544:1544
+      - 8827:8827
     depends_on:
-      - postgres-container
+      postgres-container:
+         condition: service_healthy
 
   my-driver-service:
     build:
       context: .
       dockerfile: internal/driver/Dockerfile
     ports:
-      - 2561:2561
+      - 5394:5394
     depends_on:
       - my-mongodb

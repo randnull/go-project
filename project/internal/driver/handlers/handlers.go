@@ -139,7 +139,10 @@ func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.
 	}
 
 	kafka_producer.Produce_data(tripID, "accept", tripdata)
-
+	err = dhandler.driver.AcceptDriver(tripID)
+	if err != nil {
+		fmt.Println(err)
+	}
 	w.WriteHeader(http.StatusOK)
 	accept_successfulRequests.Inc()
 	log.Println("AcceptTripHandler - success")
@@ -166,8 +169,9 @@ func (dhandler *DriverHandler) StartTripHandler(w http.ResponseWriter, r *http.R
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	kafka_producer.Produce_data(tripID, "started", tripdata)
+	go func() {
+		kafka_producer.Produce_data(tripID, "started", tripdata)
+	}()
 
 	fmt.Println("all ok")
 	w.WriteHeader(http.StatusOK)

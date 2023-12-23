@@ -18,7 +18,7 @@ import (
 )
 
 func db() *mongo.Collection {
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://my-mongodb:27017"))
 
 	err = client.Connect(context.TODO())
 	if err != nil {
@@ -73,7 +73,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			req, err := http.NewRequest("GET", "http://localhost:1518/drivers", bytes.NewReader(marshalled))
+			req, err := http.NewRequest("GET", "http://localhost:8826/drivers", bytes.NewReader(marshalled))
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -117,6 +117,7 @@ func main() {
 					log.Fatal(err)
 				}
 			}
+			log.Println("[INFO]: Get new trip!")
 			time.Sleep(300 * time.Millisecond)
 		}
 	}()

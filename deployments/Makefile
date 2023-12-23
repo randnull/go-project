@@ -13,4 +13,4 @@ get_kafdrop:
 kafdrop: get_kafdrop
 	java -jar kafdrop-4.0.1.jar --kafka.brokerConnect=127.0.0.1:29092
 
-#Код с семинара с изменениями
+#Код с семинара

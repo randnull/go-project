@@ -3,9 +3,7 @@ package location_app
 import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"log"
 	"net/http"
-	"os"
 	"project/internal/location/handlers"
 	"project/internal/location/repository"
 	"project/internal/location/service"
@@ -42,7 +40,8 @@ func (a *App) Run() {
 	router.HandleFunc("/drivers/{driver_id}/location", a.server.UpdateDriverLocationHandler).Methods("POST")
 	router.Handle("/metrics", promhttp.Handler())
 
-	addr := os.Getenv("addr_location")
-	log.Printf("Listen on %s\n", addr)
+	//addr := os.Getenv("addr_location")
+	//log.Printf("Listen on %s\n", addr)
+	addr := ":8827"
 	http.ListenAndServe(addr, router)
 }

@@ -221,3 +221,31 @@ func (storage *DriverRepository) PutNewTrip(trip modals.Trip) error {
 	log.Println("PutNewTrip - success")
 	return nil
 }
+
+func (storage *DriverRepository) AcceptFromDriver(id string) error {
+
+	objectTripId, err := primitive.ObjectIDFromHex(id)
+	println(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	filter := bson.M{"_id": objectTripId}
+	result := storage.dbCollection.FindOne(context.TODO(), filter)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var trip modals.Trip
+	err = result.Decode(&trip)
+	id_req := trip.ID
+	if err != nil {
+		return err
+	}
+	filter = bson.M{"id": id_req, "_id": bson.M{"$ne": objectTripId}}
+	_, err = storage.dbCollection.UpdateMany(context.TODO(), filter, bson.M{"$set": bson.M{"status": "Canceled"}})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Driver accept")
+	return nil
+}

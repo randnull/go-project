@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func topic() {
+func main() {
 	ctx := context.Background()
 
 	name := "getter"

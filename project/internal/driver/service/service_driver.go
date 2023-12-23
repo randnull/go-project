@@ -13,6 +13,7 @@ type DriverRepository interface {
 	StartTrip(user_id string, trip_id string) error
 	EndTrip(user_id string, trip_id string) error
 	PutNewTrip(trip modals.Trip) error
+	AcceptFromDriver(id string) error
 }
 
 type Driver struct {
@@ -93,6 +94,17 @@ func (d *Driver) PutNewTrip(trip modals.Trip) error {
 	//trip.ID = primitive.NewObjectID().Hex()
 
 	err := d.repo.PutNewTrip(trip)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	return nil
+}
+
+func (d *Driver) AcceptDriver(id string) error {
+	err := d.repo.AcceptFromDriver(id)
+
 	if err != nil {
 		log.Fatal(err)
 		return err
