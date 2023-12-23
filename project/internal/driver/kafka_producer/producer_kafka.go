@@ -25,7 +25,7 @@ func Produce_data(trip_id string, act string, trip *modals.Trip) {
 	})
 	defer writer.Close()
 
-	type_now := "trip.event." + act + "."
+	type_now := "trip.event." + act
 
 	m := modals.TripAnswer{
 		ID:              trip.ID,
