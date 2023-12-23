@@ -10,6 +10,7 @@ RUN go mod download
 COPY /cmd/driver/main.go ./cmd/driver/main.go
 COPY /internal/driver/ ./internal/driver/
 COPY /modals/ ./modals/
+COPY /env.dev ./env.dev
 
 RUN go build -o /driver-service ./cmd/driver/main.go
 

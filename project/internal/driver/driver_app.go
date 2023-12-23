@@ -6,6 +6,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
+	"os"
 	"project/internal/driver/handlers"
 	"project/internal/driver/repository"
 	"project/internal/driver/service"
@@ -45,9 +46,9 @@ func (a *App) Run() {
 	router.HandleFunc("/trips/new", a.server.PutNewTripHandler).Methods("POST")
 	router.Handle("/metrics", promhttp.Handler())
 
-	//addr := os.Getenv("addr_driver")
-	//log.Printf("Listen on %s\n\n", addr)
-	addr := ":5394"
+	addr := os.Getenv("addr_driver")
+	log.Printf("Listen on %s\n\n", addr)
+	// addr := ":5394"
 	err := http.ListenAndServe(addr, router)
 	if err != nil {
 		log.Fatal(err)

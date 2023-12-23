@@ -10,6 +10,7 @@ RUN go mod download
 COPY /cmd/location/main.go ./cmd/location/main.go
 COPY /internal/location/ ./internal/location/
 COPY /modals/ ./modals/
+COPY /env.dev ./env.dev
 
 RUN go build -o /location-service ./cmd/location/main.go
 
