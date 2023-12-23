@@ -128,7 +128,7 @@ func (dhandler *DriverHandler) AcceptTripHandler(w http.ResponseWriter, r *http.
 	userID := r.Header.Get("user_id")
 
 	if err := dhandler.driver.Accept(userID, tripID); err != nil {
-		http.Error(w, "Failed to accept trip", http.StatusInternalServerError)
+		http.Error(w, errors.FailedToAcceptTrip.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -153,14 +153,14 @@ func (dhandler *DriverHandler) StartTripHandler(w http.ResponseWriter, r *http.R
 	tripID, ok := mux.Vars(r)["trip_id"]
 	fmt.Println("start trip")
 	if !ok {
-		http.Error(w, "Invalid trip id", http.StatusBadRequest)
+		http.Error(w, errors.InvalidTripID.Error(), http.StatusBadRequest)
 		return
 	}
 
 	userID := r.Header.Get("user_id")
 
 	if err := dhandler.driver.Start(userID, tripID); err != nil {
-		http.Error(w, "Failed to start trip", http.StatusInternalServerError)
+		http.Error(w, errors.FailedToStartTrip.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -183,7 +183,7 @@ func (dhandler *DriverHandler) CancelTripHandler(w http.ResponseWriter, r *http.
 	cancel_allRequests.Inc()
 	tripID, ok := mux.Vars(r)["trip_id"]
 	if !ok {
-		http.Error(w, "Invalid trip id", http.StatusBadRequest)
+		http.Error(w, errors.InvalidTripID.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -191,7 +191,7 @@ func (dhandler *DriverHandler) CancelTripHandler(w http.ResponseWriter, r *http.
 	reason := r.URL.Query().Get("reason")
 
 	if err := dhandler.driver.Cancel(userID, tripID, reason); err != nil {
-		http.Error(w, "Failed to cancel trip", http.StatusInternalServerError)
+		http.Error(w, errors.FailedToCancelTrip.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -212,14 +212,14 @@ func (dhandler *DriverHandler) EndTripHandler(w http.ResponseWriter, r *http.Req
 	end_allRequests.Inc()
 	tripID, ok := mux.Vars(r)["trip_id"]
 	if !ok {
-		http.Error(w, "Invalid trip id", http.StatusBadRequest)
+		http.Error(w, errors.InvalidTripID.Error(), http.StatusBadRequest)
 		return
 	}
 
 	userID := r.Header.Get("user_id")
 
 	if err := dhandler.driver.End(userID, tripID); err != nil {
-		http.Error(w, "Failed to end trip", http.StatusInternalServerError)
+		http.Error(w, errors.FailedToEndTrip.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -241,12 +241,12 @@ func (dhandler *DriverHandler) PutNewTripHandler(w http.ResponseWriter, r *http.
 
 	err := json.NewDecoder(r.Body).Decode(&trip)
 	if err != nil {
-		http.Error(w, "Invalid trip", http.StatusBadRequest)
+		http.Error(w, errors.InvalidTripID.Error(), http.StatusBadRequest)
 		return
 	}
 
 	if err := dhandler.driver.PutNewTrip(trip); err != nil {
-		http.Error(w, "Failed to put new trip", http.StatusInternalServerError)
+		http.Error(w, errors.FailedToPutNewTrip.Error(), http.StatusInternalServerError)
 		return
 	}
 

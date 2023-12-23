@@ -97,17 +97,6 @@ func (storage *DriverRepository) CancelTrip(user_id string, trip_id string, reas
 	filter := bson.M{"_id": objectTripId}
 	update := bson.M{"$set": bson.M{"status": "Canceled"}}
 
-	idTripCorrect := true // TODO()
-	idUserCorrect := true // TODO()
-
-	if !idUserCorrect {
-		return errors.UserNotFoundInBD
-	}
-
-	if !idTripCorrect {
-		return errors.TripNotFound
-	}
-
 	_, err = storage.dbCollection.UpdateOne(context.TODO(), filter, update)
 
 	if err != nil {
@@ -129,17 +118,6 @@ func (storage *DriverRepository) EndTrip(user_id string, trip_id string) error {
 	filter := bson.M{"_id": objectTripId}
 	update := bson.M{"$set": bson.M{"status": "Ended"}}
 
-	idTripCorrect := true // TODO()
-	idUserCorrect := true // TODO()
-
-	if !idUserCorrect {
-		return errors.UserNotFoundInBD
-	}
-
-	if !idTripCorrect {
-		return errors.TripNotFound
-	}
-
 	_, err = storage.dbCollection.UpdateOne(context.TODO(), filter, update)
 
 	if err != nil {
@@ -160,17 +138,6 @@ func (storage *DriverRepository) AcceptTrip(user_id string, trip_id string) erro
 	filter := bson.M{"_id": objectTripId}
 	update := bson.M{"$set": bson.M{"status": "Accepted"}}
 
-	idTripCorrect := true // TODO()
-	idUserCorrect := true // TODO()
-
-	if !idUserCorrect {
-		return errors.UserNotFoundInBD
-	}
-
-	if !idTripCorrect {
-		return errors.TripNotFound
-	}
-
 	_, err = storage.dbCollection.UpdateOne(context.TODO(), filter, update)
 
 	if err != nil {
@@ -190,17 +157,6 @@ func (storage *DriverRepository) StartTrip(user_id string, trip_id string) error
 
 	filter := bson.M{"_id": objectTripId}
 	update := bson.M{"$set": bson.M{"status": "Started"}}
-
-	idTripCorrect := true // TODO()
-	idUserCorrect := true // TODO()
-
-	if !idUserCorrect {
-		return errors.UserNotFoundInBD
-	}
-
-	if !idTripCorrect {
-		return errors.TripNotFound
-	}
 
 	_, err = storage.dbCollection.UpdateOne(context.TODO(), filter, update)
 
