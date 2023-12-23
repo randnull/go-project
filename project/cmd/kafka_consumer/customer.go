@@ -58,8 +58,7 @@ func main() {
 			var message modals.KafkaMessage
 			err = json.Unmarshal(msg.Value, &message)
 			if err != nil {
-				log.Printf("Failed to decode JSON: %s\n", err)
-				continue
+				log.Fatal(err)
 			}
 
 			teacher := modals.Req{
