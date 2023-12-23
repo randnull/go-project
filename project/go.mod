@@ -11,4 +11,6 @@ require (
 	github.com/prometheus/client_golang v1.17.0
 	github.com/segmentio/kafka-go v0.4.47
 	go.mongodb.org/mongo-driver v1.13.1
+	github.com/prometheus/procfs v0.11.1
+	go.opentelemetry.io/otel v1.21.0
 )

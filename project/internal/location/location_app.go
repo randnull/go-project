@@ -13,13 +13,9 @@ type App struct {
 	repo     *repository.LocationRepository
 	server   *handlers.LocationHandler
 	location *service.Location
-	// closer   io.Closer
 }
 
 func NewApp() *App {
-	// cfg, _ := config.FromEnv()
-	// tracer, closer, _ := cfg.NewTracer(config.Logger(jaeger.StdLogger))
-	// opentracing.SetGlobalTracer(tracer)
 
 	repo := repository.NewLocationRepository()
 	serv := service.NewLocationService(repo)
@@ -29,7 +25,6 @@ func NewApp() *App {
 		repo:     repo,
 		server:   server,
 		location: serv,
-		// closer:   closer,
 	}
 	return apl
 }
