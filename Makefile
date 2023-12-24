@@ -7,11 +7,11 @@ start_kafka: clean
 start_app: start_kafka
 	docker compose -f ./project/docker-compose.yml up -d
 
-#make_topic: start_app
-#	go run project/cmd/topic/topic.go
-#
-#start: make_topic
-#	go run project/cmd/kafka_consumer/customer.go
+make_topic: start_app
+	cd project/cmd/topic && go run topic.go
+
+start: make_topic
+	cd project/cmd/kafka_consumer && go run customer.go
 
 get_kafdrop:
 	wget -c https://github.com/obsidiandynamics/kafdrop/releases/download/4.0.1/kafdrop-4.0.1.jar
