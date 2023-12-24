@@ -1,7 +1,10 @@
 clean:
 	rm -rf deployments/data/kafka{1,2,3} && rm -rf deployments/data/zoo{1,2,3} && mkdir -p deployments/data/kafka{1,2,3} && mkdir -p deployments/data/zoo{1,2,3}
 
-start_app: clean
+start_kafka: clean
+	docker compose -f ./deployments/docker-compose.yml up -d
+
+start_app: start_kafka
 	docker compose -f ./project/docker-compose.yml up -d
 
 make_topic: start_app
