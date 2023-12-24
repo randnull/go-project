@@ -27,7 +27,7 @@ services:
       context: .
       dockerfile: internal/location/Dockerfile
     ports:
-      - 8827:8827
+      - 8828:8828
     depends_on:
       postgres-container:
          condition: service_healthy
@@ -37,7 +37,7 @@ services:
       context: .
       dockerfile: internal/driver/Dockerfile
     ports:
-      - 5394:5394
+      - 5395:5395
     depends_on:
       - my-mongodb
 
