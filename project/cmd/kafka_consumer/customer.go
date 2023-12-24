@@ -18,7 +18,7 @@ import (
 )
 
 func db() *mongo.Collection {
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://my-mongodb:27017"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
 
 	err = client.Connect(context.TODO())
 	if err != nil {

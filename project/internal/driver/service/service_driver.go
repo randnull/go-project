@@ -91,8 +91,6 @@ func (d *Driver) Start(user_id string, trip_id string) error {
 }
 
 func (d *Driver) PutNewTrip(trip modals.Trip) error {
-	//trip.ID = primitive.NewObjectID().Hex()
-
 	err := d.repo.PutNewTrip(trip)
 	if err != nil {
 		log.Fatal(err)

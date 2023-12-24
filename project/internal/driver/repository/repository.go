@@ -200,7 +200,7 @@ func (storage *DriverRepository) AcceptFromDriver(id string) error {
 	filter = bson.M{"id": id_req, "_id": bson.M{"$ne": objectTripId}}
 	_, err = storage.dbCollection.UpdateMany(context.TODO(), filter, bson.M{"$set": bson.M{"status": "Canceled"}})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	log.Println("Driver accept")
 	return nil
