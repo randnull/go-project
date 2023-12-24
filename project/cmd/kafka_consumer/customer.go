@@ -72,7 +72,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			req, err := http.NewRequest("GET", "http://localhost:8827/drivers", bytes.NewReader(marshalled))
+			req, err := http.NewRequest("GET", "http://localhost:8828/drivers", bytes.NewReader(marshalled))
 			if err != nil {
 				log.Fatal(err)
 			}
