@@ -39,6 +39,5 @@ func (a *App) Run() {
 
 	addr := os.Getenv("addr_location")
 	log.Printf("Listen on %s\n", addr)
-	// addr := ":8827"
 	http.ListenAndServe(addr, router)
 }

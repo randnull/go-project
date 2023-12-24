@@ -61,13 +61,13 @@ func main() {
 				log.Fatal(err)
 			}
 
-			teacher := modals.Req{
+			resp := modals.Req{
 				Lat:    message.Data.From.Lat,
 				Lng:    message.Data.From.Lng,
 				Radius: 1000,
 			}
 
-			marshalled, err := json.Marshal(teacher)
+			marshalled, err := json.Marshal(resp)
 			if err != nil {
 				log.Fatal(err)
 			}
